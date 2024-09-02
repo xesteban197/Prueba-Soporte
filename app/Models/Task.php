@@ -9,7 +9,6 @@ class Task extends Model
 
     protected $table = 'tasks';
 
-    // Corrección: Se añade 'user_id' a los campos protegidos contra asignación masiva.
     protected $fillable = ['title', 'description', 'user_id'];
 
     // Relaciones

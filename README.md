@@ -50,7 +50,19 @@ Sigue los siguientes pasos para configurar el proyecto en tu entorno local:
 
        php artisan migrate
 
+5. **Compilar Recursos de Frontend:**
 
+   .Compila los archivos de frontend utilizando Laravel Mix:
+
+       npm run dev
+
+6. **Iniciar el Servidor:**
+
+   .Inicia el servidor de desarrollo de Laravel:
+
+       php artisan serve
+
+       
 **Objetivo de la Prueba**
 
 El proyecto contiene errores tanto en el backend (Laravel/PHP) como en el frontend (JavaScript). Tu objetivo es:
