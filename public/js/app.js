@@ -1810,6 +1810,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      completed: false,
       newTask: {
         title: '',
         description: '',
@@ -1842,8 +1843,13 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       });
     },
     completeTask: function completeTask(taskId) {
+      var _this2 = this;
       // Se utiliza la acción 'completeTask'
-      this.$store.dispatch('completeTask', taskId)["catch"](function (error) {
+      this.$store.dispatch('completeTask', taskId).then(function (updatedTask) {
+        // updatedTask is the returned value from the UPDATE_TASK mutation
+        console.log(updatedTask);
+        _this2.completed = true;
+      })["catch"](function (error) {
         console.error('Error completing task:', error);
       });
     },
@@ -1890,14 +1896,16 @@ var render = function render() {
       staticClass: "mb-1"
     }, [_vm._v(_vm._s(task.task.description))]), _vm._v(" "), _c("small", {
       staticClass: "text-muted"
-    }, [_vm._v("Assigned to: " + _vm._s(task.user.name))])]), _vm._v(" "), _c("div", [task.task.completed == 0 ? _c("button", {
+    }, [_vm._v("Assigned to: " + _vm._s(task.user.name))])]), _vm._v(" "), _c("div", [!_vm.completed ? _c("button", {
       staticClass: "btn btn-success btn-sm mr-2",
       on: {
         click: function click($event) {
           return _vm.completeTask(task.task.id);
         }
       }
-    }, [_vm._v("Complete")]) : _vm._e(), _vm._v(" "), _c("button", {
+    }, [_vm._v("Complete")]) : _vm._e(), _vm._v(" "), _vm.completed ? _c("button", {
+      staticClass: "btn btn-info btn-sm mr-2"
+    }, [_vm._v("Completada")]) : _vm._e(), _vm._v(" "), _c("button", {
       staticClass: "btn btn-danger btn-sm",
       on: {
         click: function click($event) {
@@ -2058,7 +2066,6 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
       state.tasks.push(task);
     },
     UPDATE_TASK: function UPDATE_TASK(state, updatedTask) {
-      console.log("state.tasks === ", state.tasks);
       var index = state.tasks.findIndex(function (t) {
         return t.id === updatedTask;
       });
@@ -2069,7 +2076,8 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_2_
         return t.task.id === updatedTask;
       });
       axios__WEBPACK_IMPORTED_MODULE_0___default().put("/tasks/".concat(updatedTask), findedTask.task).then(function (response) {
-        console.log("respondse == ", response.data);
+        console.log(response.data);
+        return findedTask;
       })["catch"](function (error) {
         console.error("Error updating task:", error);
       });

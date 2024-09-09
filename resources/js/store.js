@@ -13,8 +13,6 @@ export default new Vuex.Store({
             state.tasks.push(task);
         },
         UPDATE_TASK(state, updatedTask) {
-            console.log("state.tasks === " , state.tasks);
-            
             const index = state.tasks.findIndex(t => t.id === updatedTask);
             if (index !== -1) {
                 Vue.set(state.tasks, index, updatedTask);
@@ -24,13 +22,16 @@ export default new Vuex.Store({
 
             axios.put(`/tasks/${updatedTask}`, findedTask.task)
             .then(response => {
-                console.log("respondse == ", response.data);
+                console.log(response.data);
+                return findedTask;
                 
             })
             .catch(error => {
                 console.error("Error updating task:", error);
             });
         },
+
+
         DELETE_TASK(state, taskId) {
             state.tasks = state.tasks.filter(t => t.task.id !== taskId);
         }

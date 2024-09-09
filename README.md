@@ -101,3 +101,14 @@ se modifico el return para que enviara un json con los 2 objetos
 se realizo la modificacion al metodo como estaba enviando de delete a post
 se midifico en las rutas como estaba definido el delete
 se modifico el modelo de los task debido a que le faltaban los atributos
+
+## error al actualizar las tareas 
+
+se realizo la modificacion en en el store en actions ya que en el componente decia que se llamaba completeTask
+y en el store estaba con update
+
+en mutations se modifico a que enviara la peticion desde ahi para que recibiera el id y se enviara los datos
+en el controller en la funcion update se modifico a que solo al encontrar el taskId que se envia se le actualice
+el campo completed a 1
+
+en el component se agrego una variable para que al actualizar se ponga en true y aparezca la tarea completada

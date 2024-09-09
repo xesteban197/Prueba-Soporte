@@ -9,7 +9,8 @@
                     <small class="text-muted">Assigned to: {{ task.user.name }}</small>
                 </div>
                 <div>
-                    <button v-if="task.task.completed == 0" class="btn btn-success btn-sm mr-2" @click="completeTask(task.task.id)">Complete</button>
+                    <button v-if="!completed" class="btn btn-success btn-sm mr-2" @click="completeTask(task.task.id)">Complete</button>
+                    <button v-if="completed" class="btn btn-info btn-sm mr-2">Completada</button>
                     <button class="btn btn-danger btn-sm" @click="deleteTask(task.task.id)">Delete</button>
                 </div>
             </li>
@@ -30,11 +31,12 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     data() {
         return {
+            completed:false,
             newTask: {
                 title: '',
                 description: '',
@@ -44,7 +46,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['tasks']) // Simplificado para mapState
+        ...mapGetters(['tasks']) // Simplificado para mapGetters
     },
 
     watch: {
@@ -71,10 +73,15 @@ export default {
         },
         completeTask(taskId) {
             // Se utiliza la acción 'completeTask'
-            this.$store.dispatch('completeTask', taskId).catch(error => {
+            this.$store.dispatch('completeTask', taskId).then(updatedTask => {
+                // updatedTask is the returned value from the UPDATE_TASK mutation
+                console.log(updatedTask);
+                this.completed = true;
+            }).catch(error => {
                 console.error('Error completing task:', error);
             });
         },
+
         deleteTask(taskId) {
             // Se utiliza la acción 'deleteTask'
             this.$store.dispatch('deleteTask', taskId).catch(error => {
